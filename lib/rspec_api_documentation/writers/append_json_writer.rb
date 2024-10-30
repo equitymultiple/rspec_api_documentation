@@ -19,30 +19,32 @@ module RspecApiDocumentation
       end
     end
 
-    class AppendJsonIndex < JsonIndex
+    class AppendJsonIndex < JSONIndex
       def initialize(index, configuration, existing_index_hash = nil)
         @index = index
         @configuration = configuration
         @existing_index_hash = clean_index_hash(existing_index_hash)
+        @existing_index_hash_index = get_section_hash_index(@existing_index_hash)
       end
 
       def as_json(opts = nil)
-        sections.inject(@existing_index_hash) do |h, section|
-          h[:resources].push(section_hash(section))
-          h
-        end
+        @existing_index_hash[:resources][@existing_index_hash_index] = section_hash(sections.first)
+        @existing_index_hash
       end
 
       def clean_index_hash(existing_index_hash)
         unless existing_index_hash.is_a?(Hash) && existing_index_hash["resources"].is_a?(Array) #check format
           existing_index_hash = {:resources => []}
         end
-        existing_index_hash = existing_index_hash.deep_symbolize_keys
-        existing_index_hash[:resources].map!(&:deep_symbolize_keys).reject! do |resource|
+        existing_index_hash.deep_symbolize_keys
+      end
+
+      def get_section_hash_index(existing_index_hash)
+        existing_index_hash[:resources].each_with_index do |resource, index|
           resource_names = sections.map{|s| s[:resource_name]}
-          resource_names.include? resource[:name]
+          return index if resource_names.include? resource[:name]
         end
-        existing_index_hash
+        existing_index_hash[:resources].length
       end
     end
   end

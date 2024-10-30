@@ -45,8 +45,10 @@ module RspecApiDocumentation
 
     def read_request_body
       input = last_request.env["rack.input"]
-      input.rewind
-      input.read
+      if input
+        input.rewind
+        input.read
+      end
     end
 
     def document_example(method, path)
@@ -62,7 +64,7 @@ module RspecApiDocumentation
 
       request_metadata[:request_method] = method
       request_metadata[:request_path] = path
-      request_metadata[:request_body] = request_body.empty? ? nil : request_body.force_encoding("UTF-8")
+      request_metadata[:request_body] = request_body.blank? ? nil : request_body.force_encoding("UTF-8")
       request_metadata[:request_headers] = request_headers
       request_metadata[:request_query_parameters] = query_hash
       request_metadata[:request_content_type] = request_content_type

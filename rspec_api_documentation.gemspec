@@ -3,7 +3,7 @@ $:.unshift lib unless $:.include?(lib)
 
 Gem::Specification.new do |s|
   s.name        = "rspec_api_documentation"
-  s.version     = "6.1.0"
+  s.version     = "6.1.1"
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Chris Cahoon", "Sam Goldman", "Eric Oestrich"]
   s.email       = ["chris@smartlogicsolutions.com", "sam@smartlogicsolutions.com", "eric@smartlogicsolutions.com"]
@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
 
   s.add_runtime_dependency "rspec", "~> 3.0"
-  s.add_runtime_dependency "activesupport", ">= 3.0.0"
+  s.add_runtime_dependency "activesupport", ">= 6.0.0"
   s.add_runtime_dependency "mustache", "~> 1.0", ">= 0.99.4"
 
   s.add_development_dependency "bundler", ">= 1.16"
